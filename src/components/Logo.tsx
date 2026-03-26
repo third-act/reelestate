@@ -1,7 +1,9 @@
-/** Logotyp: byt filnamn i /public/images om ni uppdaterar till SVG. */
+import logoDark from '../assets/logo-dark-bg.png'
+import logoLight from '../assets/logo-light-bg.png'
+
 const SRC = {
-  light: '/images/logo-light-bg.png',
-  dark: '/images/logo-dark-bg.png',
+  light: logoLight,
+  dark: logoDark,
 } as const
 
 type LogoProps = {
