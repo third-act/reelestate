@@ -1,4 +1,4 @@
-/** Mockup-bilder som ligger oförändrade i /public/images/mockups/ */
+/** Mockup-bilder i /public/images/mockups/ — använd gemener i filnamn (Linux/Vercel är skiftlägeskänsliga). */
 export const homeMockupZigzag = {
   sectionTitle: 'Appen boende möter i vardagen',
   sectionLead:
