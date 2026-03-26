@@ -22,12 +22,12 @@ export function HomeValueProps() {
           </div>
         </RevealOnScroll>
 
-        <ul className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-2 lg:gap-10">
+        <ul className="mt-14 grid items-stretch gap-8 sm:grid-cols-2 lg:grid-cols-2 lg:gap-10">
           {blocks.map((b) => (
-            <RevealOnScroll key={b.title}>
-              <li className="rounded-2xl border border-border bg-canvas p-6 shadow-sm ring-1 ring-black/[0.03] sm:p-8">
+            <RevealOnScroll key={b.title} className="h-full min-h-0">
+              <li className="flex h-full min-h-[17rem] flex-col rounded-2xl border border-border bg-canvas p-6 shadow-sm ring-1 ring-black/[0.03] sm:min-h-[18rem] sm:p-8">
                 <h3 className="text-lg font-bold text-ink">{b.title}</h3>
-                <p className="mt-3 leading-relaxed text-muted">{b.body}</p>
+                <p className="mt-3 flex-1 leading-relaxed text-muted">{b.body}</p>
               </li>
             </RevealOnScroll>
           ))}

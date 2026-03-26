@@ -1,9 +1,7 @@
-import logoDark from '../assets/logo-dark-bg.png'
-import logoLight from '../assets/logo-light-bg.png'
-
+/** Logotyper i /public/images/ — samma mönster som mockups (stabila URL:er). */
 const SRC = {
-  light: logoLight,
-  dark: logoDark,
+  light: '/images/logo-light-bg.png',
+  dark: '/images/logo-dark-bg.png',
 } as const
 
 type LogoProps = {

@@ -7,7 +7,6 @@ const NAV_LINKS = [
   { to: '/', label: 'Startsida' },
   { to: '/kontor', label: 'Kontor' },
   { to: '/priser', label: 'Priser' },
-  { to: '/case', label: 'Case' },
   { to: '/kontakt', label: 'Kontakt' },
 ] as const
 
