@@ -22,10 +22,7 @@ const { niche } = Astro.props;
   <div class="relative flex justify-center md:justify-end">
     <div class="relative">
       <div class="absolute bottom-0 right-full mr-6 hidden lg:block xl:mr-10">
-        <StoreListingCard
-          color={niche.exampleBrand.color}
-          compact
-        />
+        <StoreListingCard color={niche.exampleBrand.color} />
       </div>
       <AppMockup niche={niche} view={niche.heroScreen} />
     </div>

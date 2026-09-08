@@ -42,9 +42,12 @@ export const POST: APIRoute = async ({ request }) => {
       <tr><td><b>Referrer</b></td><td>${esc(d.referrer) || '–'}</td></tr>
     </table>`;
 
+  const from = import.meta.env.RESEND_FROM ?? `${brand.name} <onboarding@resend.dev>`;
+  const to = import.meta.env.RESEND_TO ?? 'max.wroblewski@thirdact.se';
+
   const { error } = await resend.emails.send({
-    from: `${brand.name} <leads@reelestate.se>`,
-    to: [brand.contactEmail],
+    from,
+    to: [to],
     replyTo: d.epost,
     subject,
     html,
