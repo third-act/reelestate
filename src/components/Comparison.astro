@@ -1,6 +1,7 @@
 ---
-interface Props { genericLabel: string; rows: { label: string; generic: string; own: string }[]; brandName: string }
-const { genericLabel, rows, brandName } = Astro.props;
+import { brand } from '../config/brand';
+interface Props { genericLabel: string; rows: { label: string; generic: string; own: string }[] }
+const { genericLabel, rows } = Astro.props;
 ---
 <section class="mx-auto max-w-6xl px-5 py-16">
   <h2 class="max-w-lg text-3xl md:text-4xl">Skillnaden mot en generisk app</h2>
@@ -10,7 +11,7 @@ const { genericLabel, rows, brandName } = Astro.props;
         <tr class="border-b border-line">
           <th class="p-4 font-medium text-muted md:p-5"></th>
           <th class="p-4 font-medium text-muted md:p-5">{genericLabel}</th>
-          <th class="p-4 font-semibold md:p-5" style="background:color-mix(in oklab, var(--niche-accent) 22%, white)">{brandName}-appen</th>
+          <th class="p-4 font-semibold md:p-5" style="background:color-mix(in oklab, var(--niche-accent) 22%, white)">{brand.name}-appen</th>
         </tr>
       </thead>
       <tbody>

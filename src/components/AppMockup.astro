@@ -37,7 +37,7 @@ const activeTab = view === 'feed' ? 'home' : view;
 const initials = (n: string) => n.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
 const days = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
 ---
-<div class={`phone phone-${size} ${cls}`} style={`--pa:${accent};--pi:${ink};--pb:${b.color}`} role="img" aria-label={`Exempel: ${b.name}-appen, ${view}-vy`}>
+<div class={`phone phone-${size} ${cls}`} style={`--pa:${accent};--pi:${ink};--pb:${b.color}`} role="img" aria-label={`Exempel: Reel Estate-appen, ${view}-vy`}>
   <div class="screen">
     <div class={`statusbar ${view === "home" || view === "access" ? "statusbar-light" : ""}`}>
       <span>9:41</span><span class="island"></span>
@@ -147,7 +147,7 @@ const days = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
 
     {view === 'feed' && (
       <div class="px-3 pb-20 pt-3">
-        <div class="flex items-center justify-between text-[13px] font-medium"><Icon name="ChevronLeft" size={16} /> Feed <span class="w-4"></span></div>
+        <div class="flex items-center justify-between text-[13px] font-medium"><Icon name="ChevronLeft" size={16} /> Socialt <span class="w-4"></span></div>
         <div class="mt-3 grid grid-cols-2 gap-2">
           {s.feed.groups.map((g, i) => (
             <div class="overflow-hidden rounded-2xl bg-white shadow-sm">

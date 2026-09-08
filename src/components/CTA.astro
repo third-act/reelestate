@@ -1,7 +1,7 @@
 ---
 import { brand } from '../config/brand';
 interface Props { niche?: string; heading?: string; text?: string }
-const { niche, heading = 'Se din egen app innan ni bestämmer er', text = 'Boka 30 minuter. Vi visar hur din app skulle se ut, med ditt namn och dina färger.' } = Astro.props;
+const { niche, heading = 'Se hur Reel Estate-appen fungerar', text = 'Boka 30 minuter. Vi visar Reel Estate-appen och hur den passar er verksamhet.' } = Astro.props;
 const href = niche ? `/demo?nisch=${niche}` : '/demo';
 ---
 <section class="mx-auto max-w-6xl px-5 py-16">

@@ -30,7 +30,6 @@ export const brand = {
   logoVariant: 'wordmark' as 'wordmark' | 'symbol+wordmark',
 
   contactEmail: 'max@reelestate.se',
-  calendlyUrl: 'https://calendly.com/PLACEHOLDER/demo', // byt till ert Calendly-event
   plausibleDomain: 'reelestate.se',
 
   customerLine: 'Används redan av fastighetsägare som',

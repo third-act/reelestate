@@ -23,7 +23,7 @@ screens:
       - icon: "MessageCircle"
         label: "Chat"
       - icon: "Heart"
-        label: "Feed"
+        label: "Socialt"
       - icon: "Ellipsis"
         label: "Mer"
     important:

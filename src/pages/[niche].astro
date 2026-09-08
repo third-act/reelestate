@@ -1,6 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-import { brand } from '../config/brand';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import ScreenShowcase from '../components/ScreenShowcase.astro';
@@ -23,10 +22,10 @@ const d = entry.data;
   <Hero niche={d} />
   <div id="appen" class="scroll-mt-20"><ScreenShowcase niche={d} /></div>
   <FeatureGrid features={d.features} />
-  {d.comparison && <Comparison genericLabel={d.comparison.genericLabel} rows={d.comparison.rows} brandName={d.exampleBrand.name} />}
+  {d.comparison && <Comparison genericLabel={d.comparison.genericLabel} rows={d.comparison.rows} />}
   <BackofficeMockup niche={d} />
   <HowItWorks steps={d.howItWorks} />
   <Pricing niche={d.slug} />
   <FAQ items={d.faq} />
-  <CTA niche={d.slug} heading={d.ctaHeading} text={`Boka 30 minuter. Vi visar ${d.exampleBrand.name}-appen med ditt namn och dina färger istället.`} />
+  <CTA niche={d.slug} heading={d.ctaHeading} text="Boka 30 minuter. Vi visar Reel Estate-appen och hur den passar er verksamhet." />
 </BaseLayout>
