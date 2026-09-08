@@ -123,5 +123,5 @@ faq:
     a: "Från 30 till flera tusen. Priset följer antalet."
   - q: "Vem lägger in innehåll?"
     a: "Ni själva, i ett backoffice. Vi visar hur på demon – det tar tio minuter att lära sig."
-ctaHeading: Se er hamn i appen innan ni bestämmer er
+ctaHeading: Se din hamn i din app innan ni bestämmer er
 ---

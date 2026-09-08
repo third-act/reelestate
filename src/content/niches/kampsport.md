@@ -139,5 +139,5 @@ faq:
     a: "Salto och RCO. Annat tittar vi på före vi lovar något."
   - q: "Hur snabbt?"
     a: "Inom en vecka från logotyp, färger och schema."
-ctaHeading: Se er klubb i appen innan ni bestämmer er
+ctaHeading: Se din klubb i din app innan ni bestämmer er
 ---

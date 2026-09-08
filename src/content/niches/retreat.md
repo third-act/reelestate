@@ -121,5 +121,5 @@ faq:
     a: "Ja. Material, erbjudanden och nästa retreat ligger kvar. Flödet stängs när gruppen åkt hem, om ni vill."
   - q: "Hur snabbt kan vi vara igång?"
     a: "Inom en vecka från att vi fått logotyp och färger."
-ctaHeading: Se er retreat i appen innan ni bestämmer er
+ctaHeading: Se din retreat i din app innan ni bestämmer er
 ---

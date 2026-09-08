@@ -33,7 +33,12 @@ export const brand = {
   calendlyUrl: 'https://calendly.com/PLACEHOLDER/demo', // byt till ert Calendly-event
   plausibleDomain: 'reelestate.se',
 
-  customerLine: 'Används redan av fastighetsägare som Granitor och Skanska.',
+  customerLine: 'Används redan av fastighetsägare som',
+
+  customerLogos: [
+    { name: 'Granitor', src: '/images/logos/granitor.png', width: 72, height: 14 },
+    { name: 'Skanska', src: '/images/logos/skanska.png', width: 64, height: 14 },
+  ],
 
   pricing: {
     heading: 'Fast pris. Inga överraskningar.',

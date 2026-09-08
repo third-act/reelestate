@@ -1,7 +1,7 @@
 ---
 slug: coliving
 order: 10
-title: Huset, dörrarna och de som bor där. I er app.
+title: Huset, dörrarna och de som bor där. I din app.
 subtitle: Coliving lever på gemenskap. Ge den ett hem som heter som ni, med access, events och ett flöde bara för de som bor här.
 painLine: En WhatsApp-grupp med 80 personer, nycklar som ska lämnas över vid utflytt, och ett kök som alltid är dubbelbokat.
 seoTitle: Egen app för coliving – Reel Estate
@@ -123,5 +123,5 @@ faq:
     a: "Salto och RCO. Annat tittar vi på tillsammans först."
   - q: "Hur snabbt?"
     a: "Inom en vecka från logotyp och färger."
-ctaHeading: Se ert hus i appen innan ni bestämmer er
+ctaHeading: Se ditt hus i din app innan ni bestämmer er
 ---

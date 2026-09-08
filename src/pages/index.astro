@@ -5,6 +5,7 @@ import { getCollection } from 'astro:content';
 import NicheCard from '../components/NicheCard.astro';
 import AppMockup from '../components/AppMockup.astro';
 import CTA from '../components/CTA.astro';
+import CustomerLogos from '../components/CustomerLogos.astro';
 import Icon from '../components/Icon.astro';
 
 const niches = (await getCollection('niches')).sort((a, b) => a.data.order - b.data.order);
@@ -19,7 +20,7 @@ const featured = niches[0].data;
         <a href="#nischer" class="btn btn-primary">Hitta din bransch</a>
         <a href="/demo" class="btn btn-ghost">Boka demo</a>
       </div>
-      <p class="mt-8 text-sm text-muted">{brand.customerLine}</p>
+      <CustomerLogos />
     </div>
     <div class="flex justify-center md:justify-end">
       <AppMockup niche={featured} view={featured.heroScreen} />

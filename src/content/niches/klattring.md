@@ -121,5 +121,5 @@ faq:
     a: "Fast pris per månad efter antal medlemmar. Vi går igenom det på demon."
   - q: "Hur snabbt är vi igång?"
     a: "Inom en vecka från att vi fått logotyp och färger."
-ctaHeading: Se er hall i appen innan ni bestämmer er
+ctaHeading: Se din hall i din app innan ni bestämmer er
 ---

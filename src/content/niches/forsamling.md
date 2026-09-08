@@ -121,5 +121,5 @@ faq:
     a: "Nej. Access är ett tillval. Appen fungerar utan."
   - q: "Vad kostar det?"
     a: "Fast pris per månad. Vi går igenom det på demon."
-ctaHeading: Se er församling i appen innan ni bestämmer er
+ctaHeading: Se din församling i din app innan ni bestämmer er
 ---

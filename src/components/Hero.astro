@@ -1,30 +1,49 @@
 ---
 import { brand } from '../config/brand';
 import AppMockup from './AppMockup.astro';
-import AppIcon from './AppIcon.astro';
+import CustomerLogos from './CustomerLogos.astro';
+import StoreListingCard from './StoreListingCard.astro';
 import type { CollectionEntry } from 'astro:content';
 interface Props { niche: CollectionEntry<'niches'>['data'] }
 const { niche } = Astro.props;
 ---
-<section class="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-14 md:grid-cols-[1.1fr_1fr] md:gap-8 md:pt-20">
-  <div class="max-w-xl">
+<section class="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-14 md:grid-cols-[1.05fr_1fr] md:gap-14 lg:gap-20 md:pt-20">
+  <div class="relative z-10 max-w-xl lg:max-w-md xl:max-w-xl">
     <p class="mb-4 text-sm font-medium text-muted">{niche.cardLabel}</p>
-    <h1 class="text-[2.6rem] leading-[1.02] md:text-6xl">{niche.title}</h1>
+    <h1 class="niche-title text-[2.35rem] leading-[1.08] md:text-[2.75rem] md:leading-[1.06] lg:text-6xl lg:leading-[1.04]">{niche.title}</h1>
     <p class="mt-6 max-w-md text-lg text-muted">{niche.subtitle}</p>
     <p class="mt-4 max-w-md text-ink/80">{niche.painLine}</p>
     <div class="mt-8 flex flex-wrap items-center gap-3">
       <a href={`/demo?nisch=${niche.slug}`} class="btn btn-primary">Boka demo</a>
       <a href="#appen" class="btn btn-ghost">Se hur det funkar</a>
     </div>
-    <p class="mt-8 text-sm text-muted">{brand.customerLine}</p>
+    <CustomerLogos />
   </div>
   <div class="relative flex justify-center md:justify-end">
-    <div class="absolute right-[calc(50%+120px)] top-10 z-10 hidden lg:block">
-      <div class="rounded-2xl border border-line bg-surface p-3 shadow-[0_16px_40px_-20px_rgba(20,33,61,.35)]">
-        <AppIcon name={niche.exampleBrand.name} initials={niche.exampleBrand.initials} color={niche.exampleBrand.color} size={64} />
-        <p class="mt-2 text-center text-[11px] text-muted">Så ser den ut i App Store</p>
+    <div class="relative">
+      <div class="absolute top-16 right-full mr-2 hidden lg:block xl:top-[4.5rem] xl:mr-3">
+        <StoreListingCard
+          color={niche.exampleBrand.color}
+          compact
+        />
       </div>
+      <AppMockup niche={niche} view={niche.heroScreen} />
     </div>
-    <AppMockup niche={niche} view={niche.heroScreen} />
   </div>
 </section>
+
+<style>
+  .niche-title {
+    max-width: 14ch;
+    text-wrap: balance;
+  }
+  @media (min-width: 768px) {
+    .niche-title { max-width: 16ch; }
+  }
+  @media (min-width: 1024px) {
+    .niche-title { max-width: 13ch; }
+  }
+  @media (min-width: 1280px) {
+    .niche-title { max-width: 15ch; }
+  }
+</style>

@@ -1,7 +1,7 @@
 ---
 slug: coworking
 order: 2
-title: En medlemsapp som känns som er, inte som ett bokningssystem
+title: En medlemsapp som känns som er, inte som bokningssystem
 subtitle: Mötesrum, dörrar och community i en app med ert namn. För coworking och flexkontor med en till tre lokaler.
 painLine: Tre olika system, en Slack ingen orkar med, och en app där medlemmarna ser era konkurrenter.
 seoTitle: White-label app för coworking – Reel Estate
@@ -141,5 +141,5 @@ faq:
     a: "Berätta hur ni fakturerar idag så visar vi hur det kan se ut på demon."
   - q: "Hur snabbt kan vi byta från vårt nuvarande system?"
     a: "Inom en vecka från logo och färger. Vi hjälper till att flytta medlemmarna."
-ctaHeading: Se er lokal i appen innan ni bestämmer er
+ctaHeading: Se din lokal i din app innan ni bestämmer er
 ---

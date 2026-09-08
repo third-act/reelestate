@@ -139,5 +139,5 @@ faq:
     a: "Salto och RCO fungerar direkt. Annat system tittar vi på först."
   - q: "Hur snabbt kan vi byta?"
     a: "Inom en vecka från logotyp, färger och schema. Vi hjälper till att flytta medlemmarna."
-ctaHeading: Se er studio i appen innan ni bestämmer er
+ctaHeading: Se din studio i din app innan ni bestämmer er
 ---

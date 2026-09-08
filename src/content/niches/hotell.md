@@ -140,5 +140,5 @@ faq:
     a: "Nyckeln slutar fungera automatiskt. Appen kan ligga kvar med erbjudanden inför nästa besök."
   - q: "Hur lång tid tar det?"
     a: "Normalt inom en vecka från att vi fått logotyp och färger."
-ctaHeading: Se ert hotell i appen innan ni bestämmer er
+ctaHeading: Se ditt hotell i din app innan ni bestämmer er
 ---

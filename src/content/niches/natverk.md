@@ -121,5 +121,5 @@ faq:
     a: "Ja. Olika nivåer ser olika innehåll och events."
   - q: "Hur snabbt?"
     a: "Inom en vecka från logotyp och färger."
-ctaHeading: Se ert nätverk i appen innan ni bestämmer er
+ctaHeading: Se ditt nätverk i din app innan ni bestämmer er
 ---

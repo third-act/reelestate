@@ -139,5 +139,5 @@ faq:
     a: "Salto och RCO fungerar direkt. Annat system tittar vi på tillsammans."
   - q: "Kan vi ha flera hallar i samma app?"
     a: "Ja. Medlemmen väljer hall, ni ser allt i samma backoffice."
-ctaHeading: Se er hall i appen innan ni bestämmer er
+ctaHeading: Se din hall i din app innan ni bestämmer er
 ---

@@ -9,7 +9,7 @@ seoDescription: White-label app för golfklubbar. Klubbnyheter, access till klub
 accentColor: "#8AB17D"
 accentInk: "#14213D"
 cardLabel: Golfklubbar
-cardBlurb: Klubbnyheter, klubbhus, padel och restaurang – det GIT inte gör, i er egen app.
+cardBlurb: Klubbnyheter, klubbhus, padel och restaurang – det GIT inte gör, i din egen app.
 exampleBrand:
   name: "Ekholmens GK"
   initials: "EG"
@@ -40,12 +40,12 @@ screens:
       - name: "Vagnbod"
       - name: "Range nattetid"
   booking:
-    categories: [Padel, Bord i restaurangen, Simulator]
+    categories: [Starttid, Bord i restaurangen, Simulator]
     resource:
-      name: "Padelbana Nabben"
-      times: "17:00 · 18:00 · 19:00"
-      desc: "Utomhus vid klubbhuset"
-      tags: ["60 min", "Utomhus", "Medlem"]
+      name: "Starttid hål 1"
+      times: "07:00 · 08:00 · 09:00"
+      desc: "18 hål, boll och tee inkluderat"
+      tags: ["18 hål", "Utomhus", "Medlem"]
   feed:
     groups: [Söker boll, Damgolfen]
     posts:
@@ -140,5 +140,5 @@ faq:
     a: "Ja. Olika roller i backoffice. Restaurangen ser bara sitt."
   - q: "Hur många medlemmar klarar appen?"
     a: "Från 200 till flera tusen. Priset följer antalet."
-ctaHeading: Se er klubb i appen innan ni bestämmer er
+ctaHeading: Se din klubb i din app innan ni bestämmer er
 ---

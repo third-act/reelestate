@@ -141,5 +141,5 @@ faq:
     a: "Nej. Nyckelbrickor fungerar parallellt. Appen är ett tillägg, inte ett krav."
   - q: "Hur många lägenheter klarar appen?"
     a: "Från ett hus till tusentals lägenheter. Priset följer antalet."
-ctaHeading: Se er fastighet i appen innan ni bestämmer er
+ctaHeading: Se din fastighet i din app innan ni bestämmer er
 ---
