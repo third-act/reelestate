@@ -1,0 +1,51 @@
+---
+import '../styles/global.css';
+import { brand } from '../config/brand';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  niche?: string;
+  accentColor?: string;
+  accentInk?: string;
+  ogImage?: string;
+}
+const { title, description, niche, accentColor, accentInk, ogImage = '/og-default.png' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogUrl = new URL(ogImage, Astro.site);
+const styleVars = accentColor
+  ? `--niche-accent:${accentColor};--niche-accent-ink:${accentInk ?? '#14213D'};`
+  : '';
+---
+<!doctype html>
+<html lang="sv" style={styleVars}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:locale" content="sv_SE" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href={brand.fonts.googleFontsHref} />
+    <script defer data-domain={brand.plausibleDomain} src="https://plausible.io/js/script.js"></script>
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <Header niche={niche} />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

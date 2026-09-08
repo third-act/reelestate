@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { brand } from '../config/brand';
+export const prerender = false;
+const niche = Astro.url.searchParams.get('nisch') ?? '';
+const calendly = `${brand.calendlyUrl}?hide_gdpr_banner=1&utm_source=reelestate&utm_content=${encodeURIComponent(niche)}`;
+---
+<BaseLayout title="Tack – Reel Estate" description="Tack för din förfrågan.">
+  <section class="mx-auto max-w-6xl px-5 py-14">
+    <h1 class="text-4xl md:text-5xl">Tack, vi hör av oss.</h1>
+    <p class="mt-4 max-w-md text-lg text-muted">Vill du välja tid direkt? Boka i kalendern nedan. Annars mejlar vi dig inom en arbetsdag.</p>
+    <div class="calendly-inline-widget mt-10 min-h-[700px] w-full rounded-2xl border border-line bg-surface" data-url={calendly}></div>
+    <p class="mt-6 text-sm text-muted">Eller mejla oss på <a class="underline" href={`mailto:${brand.contactEmail}`}>{brand.contactEmail}</a></p>
+  </section>
+  <script async src="https://assets.calendly.com/assets/external/widget.js"></script>
+</BaseLayout>

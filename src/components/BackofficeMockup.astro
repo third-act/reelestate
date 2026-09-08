@@ -1,0 +1,84 @@
+---
+import Icon from './Icon.astro';
+import type { CollectionEntry } from 'astro:content';
+interface Props { niche: CollectionEntry<'niches'>['data'] }
+const { niche } = Astro.props;
+const bo = niche.backoffice;
+const b = niche.exampleBrand;
+const nav = [
+  { icon: 'LayoutGrid', label: 'Innehåll', key: 'news' },
+  { icon: 'User', label: 'Användare' },
+  { icon: 'Bell', label: 'Notis' },
+  { icon: 'FileText', label: 'Dokument' },
+  { icon: 'CalendarDays', label: 'Bokningar', key: 'bookings' },
+  { icon: 'Building2', label: 'Organisation' },
+];
+const chips = bo.view === 'news'
+  ? ['Nyheter', 'Viktig information', 'Socialt flöde', 'Evenemang', 'Erbjudanden']
+  : ['Kommande', 'Avslutade', 'Avbokade', 'Avvisade', 'Väntande'];
+const cols = bo.view === 'news' ? ['Titel', 'Status', 'Börjar visas'] : ['Skapad av', 'Resurs', 'Status'];
+const title = bo.view === 'news' ? 'Nyheter' : 'Kommande bokningar';
+const primary = bo.view === 'news' ? 'Skapa ny' : 'Skapa bokning';
+---
+<section class="bg-surface">
+  <div class="mx-auto max-w-6xl px-5 py-16">
+    <div class="grid items-center gap-10 md:grid-cols-[1fr_1.5fr]">
+      <div>
+        <h2 class="text-3xl md:text-4xl">{bo.heading}</h2>
+        <p class="mt-4 text-muted">Ni behöver ingen utvecklare. Allt i appen styrs från ett backoffice som en kanslist, förvaltare eller receptionist lär sig på tio minuter.</p>
+        <ul class="mt-6 space-y-3">
+          {bo.points.map(p => (
+            <li class="flex items-start gap-3">
+              <span class="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full text-primary" style="background:var(--niche-accent)"><Icon name="Check" size={12} strokeWidth={3} /></span>
+              <span>{p}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="bo overflow-hidden rounded-2xl border border-line bg-white shadow-[0_24px_60px_-30px_rgba(20,33,61,.4)]" role="img" aria-label="Exempel på backoffice">
+        <div class="flex items-center gap-1.5 border-b border-line px-3 py-2">
+          <span class="h-2.5 w-2.5 rounded-full bg-neutral-200"></span><span class="h-2.5 w-2.5 rounded-full bg-neutral-200"></span><span class="h-2.5 w-2.5 rounded-full bg-neutral-200"></span>
+          <span class="ml-3 rounded bg-neutral-100 px-2 py-0.5 text-[9px] text-neutral-400">backoffice.{niche.slug}.se</span>
+        </div>
+        <div class="grid grid-cols-[110px_1fr]">
+          <aside class="border-r border-line bg-[#F8FAFC] p-3">
+            <p class="font-heading text-[11px] font-bold uppercase tracking-wider">{b.name}</p>
+            <p class="mt-3 text-[8px] uppercase tracking-wide text-neutral-400">Arena</p>
+            <p class="mt-0.5 rounded border border-line bg-white px-1.5 py-1 text-[9px]">{b.name}</p>
+            <ul class="mt-3 space-y-1.5">
+              {nav.map(n => (
+                <li class={`flex items-center gap-1.5 rounded px-1.5 py-1 text-[9.5px] ${n.key === bo.view ? 'bg-[#E3EDF3] font-semibold text-[#1F4E6B]' : 'text-neutral-500'}`}>
+                  <Icon name={n.icon} size={10} />{n.label}
+                </li>
+              ))}
+            </ul>
+          </aside>
+          <div class="p-4">
+            <div class="flex flex-wrap gap-1.5">
+              {chips.map((c, i) => (
+                <span class={`rounded-full border px-2 py-1 text-[9px] font-medium ${i === 0 ? 'border-[#2C5F7C] bg-[#2C5F7C] text-white' : 'border-line text-neutral-600'}`}>{c}</span>
+              ))}
+            </div>
+            <div class="mt-3 flex items-end justify-between">
+              <div><p class="text-[14px] font-bold">{title}</p><p class="text-[9px] text-neutral-400">Klicka på en rad för att redigera</p></div>
+              <span class="rounded-md bg-[#2C5F7C] px-2.5 py-1.5 text-[9px] font-semibold text-white">+ {primary}</span>
+            </div>
+            <div class="mt-3 overflow-hidden rounded-lg border border-line">
+              <div class="grid grid-cols-[2fr_1fr_1fr] bg-[#F3F6F9] px-3 py-2 text-[9px] font-semibold text-neutral-600">
+                {cols.map(c => <span>{c}</span>)}
+              </div>
+              {bo.rows.map(r => (
+                <div class="grid grid-cols-[2fr_1fr_1fr] items-center border-t border-line px-3 py-2 text-[9.5px]">
+                  <span class="truncate pr-2">{r.a}</span>
+                  <span class="truncate pr-2 text-neutral-600">{bo.view === 'news' ? <span class="rounded-full bg-emerald-50 px-1.5 py-0.5 text-[8.5px] text-emerald-700">{r.b}</span> : r.b}</span>
+                  <span class={`truncate ${bo.view === 'bookings' ? (r.c === 'Väntande' ? 'text-amber-600' : 'text-emerald-600') : 'text-neutral-600'}`}>{r.c}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

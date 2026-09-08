@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { brand } from '../config/brand';
+import { getCollection } from 'astro:content';
+import NicheCard from '../components/NicheCard.astro';
+import AppMockup from '../components/AppMockup.astro';
+import CTA from '../components/CTA.astro';
+import Icon from '../components/Icon.astro';
+
+const niches = (await getCollection('niches')).sort((a, b) => a.data.order - b.data.order);
+const featured = niches[0].data;
+---
+<BaseLayout title={`${brand.name} – ${brand.tagline}`} description={brand.description}>
+  <section class="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-14 md:grid-cols-[1.15fr_1fr] md:pt-20">
+    <div class="max-w-xl">
+      <h1 class="text-[2.75rem] leading-[1.02] md:text-6xl">{brand.tagline}</h1>
+      <p class="mt-6 max-w-md text-lg text-muted">{brand.description}</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="#nischer" class="btn btn-primary">Hitta din bransch</a>
+        <a href="/demo" class="btn btn-ghost">Boka demo</a>
+      </div>
+      <p class="mt-8 text-sm text-muted">{brand.customerLine}</p>
+    </div>
+    <div class="flex justify-center md:justify-end">
+      <AppMockup niche={featured} view={featured.heroScreen} />
+    </div>
+  </section>
+
+  <section id="nischer" class="mx-auto max-w-6xl scroll-mt-24 px-5 py-16">
+    <h2 class="max-w-lg text-3xl md:text-4xl">Vilken verksamhet driver ni?</h2>
+    <p class="mt-3 max-w-lg text-muted">Välj den som liknar er mest. Varje sida visar appen med innehåll från just den branschen.</p>
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {niches.map(n => <NicheCard niche={n.data} />)}
+      <a href="/demo?nisch=annan" class="flex items-center gap-3 rounded-2xl border border-dashed border-line p-5 text-muted hover:border-primary hover:text-ink">
+        <Icon name="Plus" size={20} /> Annan bransch? Berätta om er.
+      </a>
+    </div>
+  </section>
+
+  <section class="bg-surface">
+    <div class="mx-auto max-w-6xl px-5 py-16 md:grid md:grid-cols-[1fr_1.4fr] md:gap-12">
+      <h2 class="text-3xl md:text-4xl">Det som alltid ingår</h2>
+      <ul class="mt-8 grid gap-x-8 gap-y-4 sm:grid-cols-2 md:mt-0">
+        {brand.coreFeatures.map(f => (
+          <li class="flex items-start gap-3">
+            <span class="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-accent text-primary"><Icon name="Check" size={12} strokeWidth={3} /></span>
+            <span>{f}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTA heading="Osäker på vilken sida ni hör hemma?" text="Boka en demo så tittar vi på er verksamhet tillsammans." />
+</BaseLayout>

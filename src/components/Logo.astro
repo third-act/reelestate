@@ -1,0 +1,14 @@
+---
+import { brand } from '../config/brand';
+interface Props { class?: string; light?: boolean }
+const { class: cls = '', light = false } = Astro.props;
+---
+<a href="/" class={`inline-flex items-center gap-1.5 ${cls}`} aria-label={`${brand.name} – startsida`}>
+  {brand.logoVariant === 'symbol+wordmark' && (
+    <span class="block h-3.5 w-3.5 rounded-sm" style="background: var(--color-accent)"></span>
+  )}
+  <span
+    class="font-heading text-[1.35rem] font-bold lowercase tracking-tight leading-none"
+    style={light ? 'color:#fff' : 'color:var(--color-primary)'}
+  >{brand.name.toLowerCase()}<span style="color: var(--color-accent)">.</span></span>
+</a>

@@ -1,0 +1,13 @@
+---
+import AppIcon from './AppIcon.astro';
+import type { CollectionEntry } from 'astro:content';
+interface Props { niche: CollectionEntry<'niches'>['data'] }
+const { niche } = Astro.props;
+---
+<a href={`/${niche.slug}`} class="group flex items-start gap-4 rounded-2xl border border-line bg-surface p-5 transition-colors hover:border-primary">
+  <AppIcon name={niche.exampleBrand.name} initials={niche.exampleBrand.initials} color={niche.exampleBrand.color} size={52} label={false} />
+  <div>
+    <h3 class="text-lg group-hover:underline">{niche.cardLabel}</h3>
+    <p class="mt-1 text-sm text-muted">{niche.cardBlurb}</p>
+  </div>
+</a>

@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+/* Färger och typsnitt speglar src/config/brand.ts – uppdatera båda vid byte */
+@theme {
+  --color-primary: #14213D;
+  --color-accent: #C8E64A;
+  --color-bg: #FAF8F3;
+  --color-surface: #FFFFFF;
+  --color-ink: #14213D;
+  --color-muted: #5B6473;
+  --color-line: #E6E2D8;
+  --font-heading: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-body: "Instrument Sans", system-ui, sans-serif;
+}
+
+:root {
+  /* Nisch-accent sätts per sida i [niche].astro, fallback = brand accent */
+  --niche-accent: var(--color-accent);
+  --niche-accent-ink: #14213D;
+}
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--niche-accent);
+  outline-offset: 2px;
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .875rem 1.5rem; border-radius: 999px;
+  font-weight: 600; font-size: 1rem; line-height: 1;
+  transition: transform .15s ease, background-color .15s ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--color-primary); color: #fff; }
+.btn-primary:hover { background: #1c2d52; }
+.btn-accent { background: var(--niche-accent); color: var(--niche-accent-ink); }
+.btn-accent:hover { filter: brightness(.95); }
+.btn-ghost { border: 1.5px solid var(--color-line); color: var(--color-ink); background: transparent; }
+.btn-ghost:hover { border-color: var(--color-primary); }
+
+.prose-body p { margin-bottom: 1rem; }

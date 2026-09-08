@@ -1,0 +1,61 @@
+---
+interface Props { niche: string; nicheLabel?: string }
+const { niche, nicheLabel } = Astro.props;
+---
+<form id="lead-form" method="post" action="/api/lead" class="space-y-5" novalidate>
+  <input type="hidden" name="nisch" value={niche} />
+  <input type="hidden" name="referrer" id="referrer" value="" />
+  <div class="hidden" aria-hidden="true">
+    <label>Lämna tomt <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+  </div>
+
+  <div>
+    <label for="verksamhet" class="mb-1.5 block text-sm font-medium">Verksamhetens namn</label>
+    <input id="verksamhet" name="verksamhet" required class="w-full rounded-xl border border-line bg-surface px-4 py-3" />
+  </div>
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for="namn" class="mb-1.5 block text-sm font-medium">Ditt namn</label>
+      <input id="namn" name="namn" required class="w-full rounded-xl border border-line bg-surface px-4 py-3" />
+    </div>
+    <div>
+      <label for="epost" class="mb-1.5 block text-sm font-medium">E-post</label>
+      <input id="epost" name="epost" type="email" required class="w-full rounded-xl border border-line bg-surface px-4 py-3" />
+    </div>
+  </div>
+  <div>
+    <label for="telefon" class="mb-1.5 block text-sm font-medium">Telefon <span class="text-muted">(valfritt)</span></label>
+    <input id="telefon" name="telefon" type="tel" class="w-full rounded-xl border border-line bg-surface px-4 py-3" />
+  </div>
+  <div>
+    <label for="behov" class="mb-1.5 block text-sm font-medium">Berätta kort om era behov <span class="text-muted">(valfritt)</span></label>
+    <textarea id="behov" name="behov" rows="4" class="w-full rounded-xl border border-line bg-surface px-4 py-3" placeholder="Hur många medlemmar, vilka lås ni har, vad ni vill lösa…"></textarea>
+  </div>
+
+  <p id="form-error" class="hidden text-sm text-red-700" role="alert"></p>
+  <button type="submit" class="btn btn-primary">Skicka förfrågan</button>
+  {nicheLabel && <p class="text-sm text-muted">Du kom från sidan för {nicheLabel}. Vi förbereder demon därefter.</p>}
+</form>
+
+<script>
+  const form = document.getElementById('lead-form') as HTMLFormElement;
+  (document.getElementById('referrer') as HTMLInputElement).value = document.referrer || '';
+  const err = document.getElementById('form-error')!;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err.classList.add('hidden');
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    const btn = form.querySelector('button[type=submit]') as HTMLButtonElement;
+    btn.disabled = true; btn.textContent = 'Skickar…';
+    try {
+      const res = await fetch('/api/lead', { method: 'POST', body: new FormData(form) });
+      if (!res.ok) throw new Error(await res.text());
+      const nisch = (form.querySelector('[name=nisch]') as HTMLInputElement).value;
+      location.href = `/tack?nisch=${encodeURIComponent(nisch)}`;
+    } catch {
+      err.textContent = 'Det gick inte att skicka. Försök igen eller mejla oss direkt.';
+      err.classList.remove('hidden');
+      btn.disabled = false; btn.textContent = 'Skicka förfrågan';
+    }
+  });
+</script>

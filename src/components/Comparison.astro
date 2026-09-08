@@ -1,0 +1,27 @@
+---
+interface Props { genericLabel: string; rows: { label: string; generic: string; own: string }[]; brandName: string }
+const { genericLabel, rows, brandName } = Astro.props;
+---
+<section class="mx-auto max-w-6xl px-5 py-16">
+  <h2 class="max-w-lg text-3xl md:text-4xl">Skillnaden mot en generisk app</h2>
+  <div class="mt-10 overflow-hidden rounded-2xl border border-line bg-surface">
+    <table class="w-full text-left text-sm md:text-base">
+      <thead>
+        <tr class="border-b border-line">
+          <th class="p-4 font-medium text-muted md:p-5"></th>
+          <th class="p-4 font-medium text-muted md:p-5">{genericLabel}</th>
+          <th class="p-4 font-semibold md:p-5" style="background:color-mix(in oklab, var(--niche-accent) 22%, white)">{brandName}-appen</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map(r => (
+          <tr class="border-b border-line last:border-0">
+            <td class="p-4 font-medium md:p-5">{r.label}</td>
+            <td class="p-4 text-muted md:p-5">{r.generic}</td>
+            <td class="p-4 md:p-5" style="background:color-mix(in oklab, var(--niche-accent) 12%, white)">{r.own}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</section>

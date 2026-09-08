@@ -1,0 +1,25 @@
+---
+import { brand } from '../config/brand';
+import Icon from './Icon.astro';
+interface Props { niche: string }
+const { niche } = Astro.props;
+const p = brand.pricing;
+---
+<section class="mx-auto max-w-6xl px-5 py-16">
+  <h2 class="max-w-lg text-3xl md:text-4xl">{p.heading}</h2>
+  <div class="mt-10 grid gap-4 md:grid-cols-3">
+    {p.tiers.map((t, i) => (
+      <div class={`rounded-2xl border p-6 ${i === 1 ? 'border-primary' : 'border-line'} bg-surface`}>
+        <p class="font-heading text-2xl font-semibold">{t.name}</p>
+        <p class="mt-1 text-muted">{t.who}</p>
+        <p class="mt-4 text-sm">{t.note}</p>
+      </div>
+    ))}
+  </div>
+  <ul class="mt-8 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+    {p.principles.map(x => (
+      <li class="flex items-start gap-3"><span class="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full text-primary" style="background:var(--niche-accent)"><Icon name="Check" size={12} strokeWidth={3} /></span>{x}</li>
+    ))}
+  </ul>
+  <p class="mt-6 text-muted">Vi ger en exakt siffra på demon när vi vet hur många medlemmar och platser ni har. <a class="underline" href={`/demo?nisch=${niche}`}>Boka en tid</a>.</p>
+</section>

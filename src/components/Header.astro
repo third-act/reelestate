@@ -1,0 +1,15 @@
+---
+import Logo from './Logo.astro';
+interface Props { niche?: string }
+const { niche } = Astro.props;
+const demoHref = niche ? `/demo?nisch=${niche}` : '/demo';
+---
+<header class="sticky top-0 z-40 border-b border-line/70 bg-bg/85 backdrop-blur">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
+    <Logo />
+    <nav class="flex items-center gap-6 text-sm font-medium">
+      <a href="/#nischer" class="hidden text-muted hover:text-ink sm:inline">Branscher</a>
+      <a href={demoHref} class="btn btn-primary !py-2.5 !px-4 text-sm">Boka demo</a>
+    </nav>
+  </div>
+</header>

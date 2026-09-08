@@ -1,0 +1,195 @@
+---
+/**
+ * iPhone-mockup med fyra vyer (home | access | booking | feed) ritade efter Reel Estate-appen.
+ * Allt är DOM, styrt av nischens screens-data + accentfärg. Inga bilder.
+ */
+import Icon from './Icon.astro';
+import type { CollectionEntry } from 'astro:content';
+
+type Niche = CollectionEntry<'niches'>['data'];
+interface Props {
+  niche: Niche;
+  view: 'home' | 'access' | 'booking' | 'feed';
+  size?: 'lg' | 'sm';
+  class?: string;
+}
+const { niche, view, size = 'lg', class: cls = '' } = Astro.props;
+const b = niche.exampleBrand;
+const s = niche.screens;
+const accent = niche.accentColor;
+const ink = niche.accentInk;
+
+const tabs = [
+  { icon: 'House', label: 'Hem', key: 'home' },
+  { icon: 'KeyRound', label: 'Nyckel', key: 'access' },
+  { icon: 'CalendarDays', label: 'Boka', key: 'booking' },
+  { icon: 'FileText', label: 'Dokument', key: 'docs' },
+];
+const activeTab = view === 'feed' ? 'home' : view;
+const initials = (n: string) => n.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+const days = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
+---
+<div class={`phone phone-${size} ${cls}`} style={`--pa:${accent};--pi:${ink};--pb:${b.color}`} role="img" aria-label={`Exempel: ${b.name}-appen, ${view}-vy`}>
+  <div class="screen">
+    <div class={`statusbar ${view === "home" || view === "access" ? "statusbar-light" : ""}`}>
+      <span>9:41</span><span class="island"></span>
+      <span class="flex items-center gap-1"><Icon name="Signal" size={10} /><Icon name="Wifi" size={10} /><Icon name="BatteryFull" size={12} /></span>
+    </div>
+
+    {(view === 'home' || view === 'access') && (
+      <div class="relative">
+        <!-- hero -->
+        <div class="hero" style={`background: linear-gradient(160deg, color-mix(in oklab, var(--pb) 85%, black) 0%, color-mix(in oklab, var(--pb) 55%, black) 100%)`}>
+          <div class="flex items-center justify-between px-4 pt-2">
+            <span class="grid h-8 w-8 place-items-center rounded-full bg-white/90 text-[10px] font-bold" style="color:var(--pb)">{b.initials}</span>
+            <span class="grid h-8 w-8 place-items-center rounded-full bg-white/20 text-white"><Icon name="Bell" size={14} /></span>
+          </div>
+          <div class="mt-auto grid grid-cols-4 gap-1 px-3 pb-6">
+            {s.home.quickActions.map(q => (
+              <div class="flex flex-col items-center gap-1.5 text-white">
+                <span class="grid h-11 w-11 place-items-center rounded-full bg-white/20 backdrop-blur"><Icon name={q.icon} size={18} /></span>
+                <span class="text-[9px]">{q.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <!-- cards -->
+        <div class="-mt-4 space-y-2.5 px-3 pb-20">
+          <div class="rounded-2xl bg-white p-3.5 shadow-sm">
+            <p class="text-[9px] text-neutral-400">Viktig information</p>
+            <p class="mt-0.5 text-[13px] font-semibold leading-tight">{s.home.important.title}</p>
+            <p class="mt-1 text-[10px] leading-snug text-neutral-500 line-clamp-2">{s.home.important.text}</p>
+            <p class="mt-2 text-center text-[10px] font-medium" style="color:var(--pb)">Läs mer</p>
+          </div>
+          <div class="rounded-2xl bg-white p-3.5 shadow-sm">
+            <p class="text-[9px] text-neutral-400">Nyheter</p>
+            <p class="mt-0.5 text-[13px] font-semibold leading-tight">{s.home.news.title}</p>
+            <p class="mt-1 text-[10px] leading-snug text-neutral-500 line-clamp-2">{s.home.news.text}</p>
+          </div>
+        </div>
+
+        {view === 'access' && (
+          <>
+            <div class="absolute inset-0 bg-black/45"></div>
+            <div class="sheet">
+              <span class="mx-auto block h-1 w-8 rounded-full bg-neutral-300"></span>
+              <span class="mx-auto mt-3 grid h-9 w-9 place-items-center" style="color:var(--pb)"><Icon name="Lock" size={26} /></span>
+              <p class="mt-1 text-center text-[15px] font-semibold">Öppna dörr</p>
+              <p class="mx-auto mt-1 max-w-[220px] text-center text-[9.5px] text-neutral-500">Sök bland dörrar du kan öppna. Favoritmarkera så ligger de överst.</p>
+              <div class="mt-3 flex items-center gap-2 rounded-xl border px-3 py-2 text-[10px] text-neutral-400" style="border-color:var(--pb)"><Icon name="Search" size={12} /> Sök bland alla dörrar</div>
+              <div class="mt-2.5 space-y-1.5">
+                {s.access.doors.slice(0, 3).map(d => (
+                  <div class="flex items-center justify-between rounded-xl bg-white px-3 py-2.5 text-[11px] shadow-sm">
+                    <span>{d.name}</span>
+                    <span class={d.fav ? 'text-amber-400' : 'text-neutral-300'}><Icon name="Star" size={13} /></span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    )}
+
+    {view === 'booking' && (
+      <div class="px-3 pb-20 pt-3">
+        <div class="rounded-2xl bg-white p-3.5 shadow-sm">
+          <p class="text-[10px] text-neutral-500">Välj kategori</p>
+          <div class="mt-2 flex gap-1.5 overflow-hidden">
+            {s.booking.categories.map((c, i) => (
+              <span class={`shrink-0 rounded-lg px-2.5 py-1.5 text-[10px] font-medium ${i === 0 ? 'text-white' : 'text-neutral-800'}`} style={i === 0 ? 'background:var(--pb)' : ''}>{c}</span>
+            ))}
+          </div>
+          <div class="my-3 h-px bg-neutral-100"></div>
+          <p class="text-[10px] text-neutral-500">Välj dag</p>
+          <div class="mt-2 grid grid-cols-7 text-center text-[10px]">
+            {days.map(d => <span class="text-neutral-400">{d}</span>)}
+            {[7, 8, 9, 10, 11, 12, 13].map((n, i) => (
+              <span class="mt-1 flex flex-col items-center gap-1">
+                <span class={`grid h-6 w-6 place-items-center rounded-full ${i === 1 ? 'text-white' : ''} ${i === 0 ? 'text-neutral-300' : ''}`} style={i === 1 ? 'background:var(--pb)' : ''}>{n}</span>
+                <span class={`h-1 w-1 rounded-full ${i === 0 ? '' : 'bg-emerald-500'}`}></span>
+              </span>
+            ))}
+          </div>
+        </div>
+        <div class="mt-4 flex items-center justify-between px-0.5">
+          <p class="text-[11px] font-medium text-neutral-500">Tillgängligt idag</p>
+          <span class="text-neutral-400"><Icon name="SlidersHorizontal" size={12} /></span>
+        </div>
+        <div class="mt-2 flex gap-2.5 rounded-2xl bg-white p-2.5 shadow-sm">
+          <div class="h-[72px] w-[72px] shrink-0 rounded-xl" style="background: linear-gradient(135deg, color-mix(in oklab, var(--pa) 70%, white), var(--pb))"></div>
+          <div class="min-w-0">
+            <p class="text-[12px] font-semibold">{s.booking.resource.name}</p>
+            <p class="text-[10px] font-medium" style="color:var(--pb)">{s.booking.resource.times}</p>
+            <p class="truncate text-[10px] text-neutral-500">{s.booking.resource.desc}</p>
+            <div class="mt-1.5 flex gap-1 overflow-hidden">
+              {s.booking.resource.tags.map(t => <span class="shrink-0 rounded-full bg-neutral-100 px-1.5 py-0.5 text-[8px] font-semibold uppercase tracking-wide">{t}</span>)}
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {view === 'feed' && (
+      <div class="px-3 pb-20 pt-3">
+        <div class="flex items-center justify-between text-[13px] font-medium"><Icon name="ChevronLeft" size={16} /> Feed <span class="w-4"></span></div>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          {s.feed.groups.map((g, i) => (
+            <div class="overflow-hidden rounded-2xl bg-white shadow-sm">
+              <div class="h-14" style={i === 0 ? 'background: linear-gradient(135deg, #b8a7f0, #8f7be6)' : 'background: linear-gradient(135deg, var(--pa), var(--pb))'}></div>
+              <p class="p-2 text-center text-[10px] font-semibold">{g}</p>
+            </div>
+          ))}
+        </div>
+        <div class="mt-3 space-y-2">
+          {s.feed.posts.map(p => (
+            <div class="rounded-2xl bg-white p-3 shadow-sm">
+              <div class="flex items-center gap-2">
+                <span class="grid h-7 w-7 place-items-center rounded-full text-[9px] font-bold text-white" style="background:var(--pb);opacity:.85">{initials(p.author)}</span>
+                <div class="leading-tight"><p class="text-[11px] font-medium">{p.author}</p><p class="text-[9px] text-neutral-400">{p.date}</p></div>
+              </div>
+              <p class="mt-2 text-[11px] leading-snug">{p.text}</p>
+              <div class="mt-2 flex justify-around border-t border-neutral-100 pt-2 text-[9px] text-neutral-500">
+                <span class="flex items-center gap-1"><Icon name="Heart" size={11} /> Gilla</span>
+                <span class="flex items-center gap-1"><Icon name="MessageCircle" size={11} /> Kommentera{p.comments ? ` (${p.comments})` : ''}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div class="compose">
+          <span class="flex-1 rounded-full border border-neutral-200 bg-white px-3 py-2 text-[10px] text-neutral-400">Skriv ett inlägg</span>
+          <span class="grid h-8 w-8 place-items-center rounded-full text-white" style="background:var(--pb)"><Icon name="Send" size={13} /></span>
+        </div>
+      </div>
+    )}
+
+    {view !== 'feed' && (
+      <div class="tabbar">
+        {tabs.map(t => (
+          <span class={`flex flex-col items-center gap-0.5 text-[8.5px] ${t.key === activeTab ? 'font-semibold' : 'text-neutral-400'}`} style={t.key === activeTab ? 'color:var(--pb)' : ''}>
+            <Icon name={t.icon} size={17} />{t.label}
+          </span>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .phone { --w: 290px; width: var(--w); height: calc(var(--w) * 844 / 390); border-radius: 46px; background: #14213D; padding: 9px;
+    box-shadow: 0 0 0 1.5px #2b3a5c inset, 0 30px 60px -20px rgba(20,33,61,.45), 0 12px 24px -12px rgba(20,33,61,.3); color:#14213D; flex-shrink:0; }
+  .phone-sm { --w: 210px; border-radius: 34px; padding: 7px; }
+  .phone-sm .screen { border-radius: 28px; }
+  .screen { position:relative; height:100%; overflow:hidden; border-radius:38px; background:#F7F7F8;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Instrument Sans", sans-serif; }
+  .statusbar { position:relative; z-index:5; display:flex; align-items:center; justify-content:space-between; padding: 10px 20px 0; font-size:10px; font-weight:600; color:#14213D; }
+  .statusbar-light { color:#fff; }
+  .statusbar-light .island { background:#0a1122; }
+  .island { width:78px; height:22px; border-radius:999px; background:#14213D; }
+  .hero { display:flex; flex-direction:column; min-height: calc(var(--w) * 844 / 390 * 0.42); margin-top:-32px; padding-top:40px; }
+  .sheet { position:absolute; left:0; right:0; bottom:0; z-index:6; background:#F7F7F8; border-radius:22px 22px 0 0; padding: 8px 14px 16px; }
+  .tabbar { position:absolute; left:0; right:0; bottom:0; z-index:4; display:flex; justify-content:space-around; align-items:end;
+    padding: 8px 10px 20px; background: rgba(247,247,248,.95); border-top:1px solid #ECECEE; }
+  .compose { position:absolute; left:0; right:0; bottom:0; display:flex; align-items:center; gap:8px; padding: 8px 12px 20px; background:#F7F7F8; border-top:1px solid #ECECEE; }
+  @media (max-width: 640px) { .phone { --w: 250px; } .phone-sm { --w: 150px; } }
+</style>

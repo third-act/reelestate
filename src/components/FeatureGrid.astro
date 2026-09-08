@@ -1,0 +1,19 @@
+---
+import Icon from './Icon.astro';
+interface Props { features: { icon: string; title: string; description: string }[]; heading?: string }
+const { features, heading = 'Det här får ni' } = Astro.props;
+---
+<section id="funktioner" class="mx-auto max-w-6xl px-5 py-16">
+  <h2 class="max-w-lg text-3xl md:text-4xl">{heading}</h2>
+  <div class="mt-10 grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
+    {features.map(f => (
+      <div class="border-t border-line pt-5">
+        <span class="mb-3 inline-grid h-10 w-10 place-items-center rounded-xl" style="background:var(--niche-accent);color:var(--niche-accent-ink)">
+          <Icon name={f.icon} size={20} />
+        </span>
+        <h3 class="text-lg">{f.title}</h3>
+        <p class="mt-1.5 text-muted">{f.description}</p>
+      </div>
+    ))}
+  </div>
+</section>

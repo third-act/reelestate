@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import { brand } from '../config/brand';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ScreenShowcase from '../components/ScreenShowcase.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+import Comparison from '../components/Comparison.astro';
+import BackofficeMockup from '../components/BackofficeMockup.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Pricing from '../components/Pricing.astro';
+import FAQ from '../components/FAQ.astro';
+import CTA from '../components/CTA.astro';
+
+export async function getStaticPaths() {
+  const niches = await getCollection('niches');
+  return niches.map(n => ({ params: { niche: n.data.slug }, props: { entry: n } }));
+}
+const { entry } = Astro.props;
+const d = entry.data;
+---
+<BaseLayout title={d.seoTitle} description={d.seoDescription} niche={d.slug} accentColor={d.accentColor} accentInk={d.accentInk}>
+  <Hero niche={d} />
+  <div id="appen" class="scroll-mt-20"><ScreenShowcase niche={d} /></div>
+  <FeatureGrid features={d.features} />
+  {d.comparison && <Comparison genericLabel={d.comparison.genericLabel} rows={d.comparison.rows} brandName={d.exampleBrand.name} />}
+  <BackofficeMockup niche={d} />
+  <HowItWorks steps={d.howItWorks} />
+  <Pricing niche={d.slug} />
+  <FAQ items={d.faq} />
+  <CTA niche={d.slug} heading={d.ctaHeading} text={`Boka 30 minuter. Vi visar ${d.exampleBrand.name}-appen med ert namn och era färger istället.`} />
+</BaseLayout>

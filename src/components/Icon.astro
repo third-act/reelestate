@@ -1,0 +1,8 @@
+---
+/** Tunn wrapper: väljer lucide-ikon efter strängnamn (PascalCase, t.ex. "CalendarCheck") */
+import * as icons from 'lucide-astro';
+interface Props { name: string; size?: number; class?: string; strokeWidth?: number }
+const { name, size = 20, class: cls = '', strokeWidth = 2 } = Astro.props;
+const Cmp = (icons as any)[name] ?? (icons as any).Sparkles;
+---
+<Cmp size={size} class={cls} stroke-width={strokeWidth} aria-hidden="true" />
