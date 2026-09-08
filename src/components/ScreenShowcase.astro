@@ -11,7 +11,7 @@ const views = ['home', 'booking', 'access', 'feed'] as const;
     <p class="mt-3 max-w-lg text-muted">Fyra vyer. Ditt namn, dina färger, ditt innehåll. Ingen annan verksamhet i samma app.</p>
     <div class="mt-10 flex gap-6 overflow-x-auto pb-4 md:grid md:grid-cols-4 md:overflow-visible">
       {views.map(v => (
-        <figure class="flex shrink-0 flex-col items-center gap-4">
+        <figure class="flex shrink-0 flex-col items-center gap-7 md:gap-8">
           <AppMockup niche={niche} view={v} size="sm" />
           <figcaption class="max-w-[220px] text-center text-sm text-muted">{niche.screenCaptions[v]}</figcaption>
         </figure>
