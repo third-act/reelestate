@@ -6,7 +6,7 @@ const icon = compact ? 54 : 72;
 const r = icon * 0.2237;
 ---
 
-<div class={`store-listing flex select-none flex-col items-center ${compact ? 'w-[132px]' : 'w-[168px]'}`}>
+<div class={`store-listing flex select-none flex-col items-center ${compact ? 'w-[148px]' : 'w-[168px]'}`}>
   <div
     class="relative grid place-items-center px-1.5 text-center font-heading font-semibold leading-[1.15] text-white shadow-[0_8px_22px_-10px_rgba(20,33,61,.4)]"
     style={`width:${icon}px;height:${icon}px;border-radius:${r}px;background:linear-gradient(145deg, color-mix(in srgb, ${color} 88%, white), ${color} 55%, color-mix(in srgb, ${color} 75%, black));font-size:${compact ? 9 : 11}px;letter-spacing:-.01em`}
@@ -20,7 +20,14 @@ const r = icon * 0.2237;
     ></div>
   </div>
 
-  <p class={`text-center leading-snug text-muted ${compact ? 'mt-2 text-[9px]' : 'mt-2.5 text-[10px]'}`}>
-    Din egen app i <span class="font-medium text-ink">App Store</span> och <span class="font-medium text-ink">Google Play</span>
+  <p class={`store-listing-copy text-center text-muted ${compact ? 'mt-2.5 text-[9px] leading-[1.45]' : 'mt-3 text-[10px] leading-[1.5]'}`}>
+    Egen app med egna färger och branding i <span class="font-medium text-ink">App Store</span> och <span class="font-medium text-ink">Google Play</span>
   </p>
 </div>
+
+<style>
+  .store-listing-copy {
+    max-width: 15ch;
+    text-wrap: balance;
+  }
+</style>
