@@ -1,8 +1,6 @@
 ---
-import { brand } from '../config/brand';
 import AppMockup from './AppMockup.astro';
 import CustomerLogos from './CustomerLogos.astro';
-import StoreListingCard from './StoreListingCard.astro';
 import type { CollectionEntry } from 'astro:content';
 interface Props { niche: CollectionEntry<'niches'>['data'] }
 const { niche } = Astro.props;
@@ -19,17 +17,33 @@ const { niche } = Astro.props;
     </div>
     <CustomerLogos />
   </div>
-  <div class="relative flex justify-center md:justify-end">
-    <div class="relative">
-      <div class="absolute bottom-0 right-full mr-6 hidden lg:block xl:mr-10">
-        <StoreListingCard color={niche.exampleBrand.color} />
-      </div>
+  <div class="hero-visual flex justify-center md:justify-end">
+    <div class="hero-mockup-wrap">
       <AppMockup niche={niche} view={niche.heroScreen} />
     </div>
   </div>
 </section>
 
 <style>
+  .hero-mockup-wrap {
+    transform: perspective(1100px) rotateY(-10deg) rotateX(5deg);
+    transform-origin: center bottom;
+    filter: drop-shadow(0 24px 48px rgba(20, 33, 61, 0.28));
+  }
+  .hero-mockup-wrap :global(.phone) {
+    --w: 318px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-mockup-wrap {
+      transform: none;
+      filter: drop-shadow(0 16px 32px rgba(20, 33, 61, 0.2));
+    }
+  }
+  @media (max-width: 640px) {
+    .hero-mockup-wrap :global(.phone) {
+      --w: 268px;
+    }
+  }
   .niche-title {
     max-width: 14ch;
     text-wrap: balance;

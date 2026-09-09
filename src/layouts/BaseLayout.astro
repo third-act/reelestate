@@ -10,14 +10,16 @@ interface Props {
   niche?: string;
   accentColor?: string;
   accentInk?: string;
+  brandColor?: string;
   ogImage?: string;
 }
-const { title, description, niche, accentColor, accentInk, ogImage = '/og-default.png' } = Astro.props;
+const { title, description, niche, accentColor, accentInk, brandColor, ogImage = '/og-default.png' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogUrl = new URL(ogImage, Astro.site);
-const styleVars = accentColor
-  ? `--niche-accent:${accentColor};--niche-accent-ink:${accentInk ?? '#14213D'};`
-  : '';
+const parts: string[] = [];
+if (accentColor) parts.push(`--niche-accent:${accentColor}`, `--niche-accent-ink:${accentInk ?? '#14213D'}`);
+if (brandColor) parts.push(`--preview-brand:${brandColor}`);
+const styleVars = parts.join(';');
 ---
 <!doctype html>
 <html lang="sv" style={styleVars}>

@@ -36,8 +36,9 @@ const tabs = [
 const activeTab = view === 'feed' ? 'home' : view;
 const initials = (n: string) => n.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
 const days = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
+const tabIconSize = size === 'sm' ? 12 : 17;
 ---
-<div class={`phone phone-${size} ${cls}`} style={`--pa:${accent};--pi:${ink};--pb:${b.color}`} role="img" aria-label={`Exempel: Reel Estate-appen, ${view}-vy`}>
+<div class={`phone phone-${size} ${cls}`} style={`--pa:${accent};--pi:${ink};--pb-fallback:${b.color};--pb:var(--preview-brand, var(--pb-fallback))`} role="img" aria-label={`Exempel: Reel Estate-appen, ${view}-vy`}>
   <div class="screen">
     <div class={`statusbar ${view === "home" || view === "access" ? "statusbar-light" : ""}`}>
       <span>9:41</span><span class="island"></span>
@@ -184,8 +185,9 @@ const days = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
     {view !== 'feed' && (
       <div class="tabbar">
         {tabs.map(t => (
-          <span class={`flex flex-col items-center gap-0.5 text-[8.5px] ${t.key === activeTab ? 'font-semibold' : 'text-neutral-400'}`} style={t.key === activeTab ? 'color:var(--pb)' : ''}>
-            <Icon name={t.icon} size={17} />{t.label}
+          <span class={`tabbar-item ${t.key === activeTab ? 'is-active' : ''}`} style={t.key === activeTab ? 'color:var(--pb)' : ''}>
+            <Icon name={t.icon} size={tabIconSize} />
+            <span class="tabbar-label">{t.label}</span>
           </span>
         ))}
       </div>
@@ -196,7 +198,12 @@ const days = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
 <style>
   .phone { --w: 290px; --tabbar-h: calc(var(--w) * 844 / 390 * 0.095); --sheet-top: calc(var(--w) * 844 / 390 * 0.42); --sheet-r: calc(var(--w) * 0.124); width: var(--w); height: calc(var(--w) * 844 / 390); border-radius: 46px; background: #14213D; padding: 9px;
     box-shadow: 0 0 0 1.5px #2b3a5c inset, 0 30px 60px -20px rgba(20,33,61,.45), 0 12px 24px -12px rgba(20,33,61,.3); color:#14213D; flex-shrink:0; }
-  .phone-sm { --w: 210px; border-radius: 34px; padding: 7px; }
+  .phone-sm {
+    --w: 210px;
+    --tabbar-h: calc(var(--w) * 844 / 390 * 0.108);
+    border-radius: 34px;
+    padding: 7px;
+  }
   .phone-sm .screen { border-radius: 28px; }
   .screen { position:relative; height:100%; overflow:hidden; border-radius:38px; background:#F7F7F8;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Instrument Sans", sans-serif; }
@@ -229,8 +236,50 @@ const days = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
   .access-dim { position:absolute; inset:0 0 auto 0; height:calc(var(--sheet-top) + var(--sheet-r) * 1.35); z-index:4; background:rgba(0,0,0,.28); pointer-events:none; }
   .sheet-wrap { position:absolute; left:0; right:0; top:var(--sheet-top); bottom:0; z-index:5; pointer-events:none; }
   .sheet { height:100%; overflow:hidden; padding: 10px 14px calc(var(--tabbar-h) + 6px); background:#F7F7F8; border-radius:var(--sheet-r) var(--sheet-r) 0 0; pointer-events:auto; -webkit-backface-visibility:hidden; backface-visibility:hidden; transform:translateZ(0); }
-  .tabbar { position:absolute; left:0; right:0; bottom:0; z-index:6; display:flex; justify-content:space-around; align-items:end;
-    height:var(--tabbar-h); padding: 8px 10px 14px; background:#F7F7F8; border-top:1px solid #ECECEE; box-sizing:border-box; }
+  .tabbar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--tabbar-h);
+    padding: calc(var(--w) * 0.025) calc(var(--w) * 0.048) calc(var(--w) * 0.042);
+    background: #F7F7F8;
+    border-top: 1px solid #ECECEE;
+    box-sizing: border-box;
+  }
+  .tabbar-item {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    max-width: 25%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--w) * 0.008);
+    color: #a3a3a3;
+    text-align: center;
+  }
+  .tabbar-item.is-active {
+    font-weight: 600;
+  }
+  .tabbar-label {
+    width: 100%;
+    font-size: calc(var(--w) * 0.027);
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .phone-sm .tabbar {
+    padding: calc(var(--w) * 0.022) calc(var(--w) * 0.052) calc(var(--w) * 0.04);
+  }
+  .phone-sm .tabbar-label {
+    font-size: calc(var(--w) * 0.029);
+  }
   .compose { position:absolute; left:0; right:0; bottom:0; display:flex; align-items:center; gap:8px; padding: 8px 12px 20px; background:#F7F7F8; border-top:1px solid #ECECEE; }
   @media (max-width: 640px) { .phone { --w: 250px; } .phone-sm { --w: 150px; } }
 </style>

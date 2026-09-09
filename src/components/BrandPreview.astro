@@ -1,0 +1,681 @@
+---
+/** Interaktiv hemskärms-preview: logotyp + färg som styr alla mockups. */
+interface Props { defaultColor: string; class?: string; size?: 'default' | 'sm'; hideCaption?: boolean }
+const { defaultColor, class: cls = '', size = 'default', hideCaption = false } = Astro.props;
+
+const hexToHue = (hex: string) => {
+  const n = hex.replace('#', '');
+  const r = parseInt(n.slice(0, 2), 16) / 255;
+  const g = parseInt(n.slice(2, 4), 16) / 255;
+  const b = parseInt(n.slice(4, 6), 16) / 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  if (max === min) return 0;
+  const d = max - min;
+  let h = 0;
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+  else if (max === g) h = ((b - r) / d + 2) / 6;
+  else h = ((r - g) / d + 4) / 6;
+  return Math.round(h * 360);
+};
+
+const defaultHue = hexToHue(defaultColor);
+const highlightIndex = 6;
+const placeholderColors = ['#8E9AAF', '#CBC0D3', '#EFD3D7', '#DEE2FF', '#98C1D9', '#E0B1CB', '#B8B8FF', '#A0C4FF', '#FFD6A5', '#CAFFBF', '#9BF6FF', '#BDB2FF', '#FFC6FF', '#FDFFB6', '#FFADAD', '#C9ADA7', '#A5A58D', '#6B705C', '#A2D2FF', '#BDE0FE'];
+---
+
+<div
+  class={`brand-preview brand-preview--${size} ${cls}`}
+  data-brand-preview
+  data-default-color={defaultColor}
+  data-default-hue={defaultHue}
+>
+  <aside class="brand-float">
+    <div class="brand-callout" aria-hidden="true">
+      <span class="brand-callout-text">Testa här</span>
+      <svg class="brand-callout-arrow" viewBox="0 0 40 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M20 2 C 24 12, 26 24, 22 34 C 20 40, 20 44, 20 44"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+        />
+        <path
+          d="M13 36 L20 50 L27 36"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </div>
+
+    <div class="brand-controls">
+      <div
+        class="dropzone"
+        role="button"
+        tabindex="0"
+        aria-label="Ladda upp logotyp"
+      >
+        <input type="file" class="dropzone-input" accept="image/png,image/jpeg,image/svg+xml,image/webp" tabindex="-1" />
+        <span class="dropzone-label">Släpp din logotyp</span>
+        <span class="dropzone-hint text-muted">PNG · JPG · SVG · 2&nbsp;MB</span>
+      </div>
+
+      <div class="brand-color-field">
+        <label class="brand-color-label">
+          <span class="flex items-center justify-between">
+            <span>Appfärg</span>
+            <button type="button" class="reset-btn text-xs font-normal text-muted underline-offset-2 hover:underline">Återställ</button>
+          </span>
+          <input class="hue-slider w-full" type="range" min="0" max="360" value={defaultHue} />
+        </label>
+      </div>
+
+      <p class="brand-error hidden text-xs text-red-700" role="alert" aria-live="polite"></p>
+    </div>
+  </aside>
+
+  <div class="brand-phone" aria-hidden="true">
+      <div class="home-phone">
+        <div class="home-screen">
+          <div class="home-status">
+            <span>9:41</span>
+            <span class="home-island"></span>
+            <span></span>
+          </div>
+          <div class="home-grid">
+            {placeholderColors.map((c, i) => (
+              <div class={`home-icon-slot ${i === highlightIndex ? 'is-highlight' : 'is-dimmed'}`}>
+                {i === highlightIndex ? (
+                  <div class="home-icon-highlight">
+                    <div class="home-logo-well hidden" aria-hidden="true">
+                      <img class="home-logo-img" alt="" />
+                    </div>
+                    <span class="home-logo-fallback">Din<br />logotyp</span>
+                  </div>
+                ) : (
+                  <div class="home-icon-placeholder" style={`background:${c}`}></div>
+                )}
+                {i === highlightIndex && <span class="home-icon-label">Din app</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+  </div>
+
+  {!hideCaption && (
+    <p class="brand-copy mt-3 text-[12px] leading-[1.45] text-muted">
+      Din egen app, skräddarsydd<br />
+      för <span class="font-medium text-ink">Appstore</span> och <span class="whitespace-nowrap font-medium text-ink">Google Play</span>
+    </p>
+  )}
+</div>
+
+<script>
+  const initBrandPreview = (root: HTMLElement) => {
+    const defaultColor = root.dataset.defaultColor!;
+    const defaultHue = Number(root.dataset.defaultHue ?? 0);
+    const slider = root.querySelector('.hue-slider') as HTMLInputElement;
+    const dropzone = root.querySelector('.dropzone') as HTMLElement;
+    const fileInput = root.querySelector('.dropzone-input') as HTMLInputElement;
+    const logoWell = root.querySelector('.home-logo-well') as HTMLElement;
+    const logoIcon = root.querySelector('.home-icon-highlight') as HTMLElement;
+    const logoImg = root.querySelector('.home-logo-img') as HTMLImageElement;
+    const logoFallback = root.querySelector('.home-logo-fallback') as HTMLElement;
+    const resetBtn = root.querySelector('.reset-btn') as HTMLButtonElement;
+    const errEl = root.querySelector('.brand-error') as HTMLElement;
+    const MAX_BYTES = 2 * 1024 * 1024;
+    const ACCEPT = new Set(['image/png', 'image/jpeg', 'image/svg+xml', 'image/webp']);
+
+    const hueToHex = (h: number) => {
+      const s = 0.45;
+      const l = 0.42;
+      const a = s * Math.min(l, 1 - l);
+      const f = (n: number) => {
+        const k = (n + h / 30) % 12;
+        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * color).toString(16).padStart(2, '0');
+      };
+      return `#${f(0)}${f(8)}${f(4)}`;
+    };
+
+    const setColor = (hex: string) => {
+      document.documentElement.style.setProperty('--preview-brand', hex);
+    };
+
+    const showError = (msg: string) => {
+      errEl.textContent = msg;
+      errEl.classList.remove('hidden');
+    };
+
+    const clearError = () => errEl.classList.add('hidden');
+
+    let raf = 0;
+    slider.addEventListener('input', () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => setColor(hueToHex(Number(slider.value))));
+    });
+
+    const logoWellBg = (img: HTMLImageElement) => {
+      try {
+        const size = 48;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return '#FFFFFF';
+        ctx.drawImage(img, 0, 0, size, size);
+        const { data } = ctx.getImageData(0, 0, size, size);
+        let lum = 0;
+        let count = 0;
+        for (let i = 0; i < data.length; i += 4) {
+          if (data[i + 3] < 40) continue;
+          lum += 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+          count++;
+        }
+        if (!count) return '#FFFFFF';
+        return lum / count > 165 ? '#14213D' : '#FFFFFF';
+      } catch {
+        return '#FFFFFF';
+      }
+    };
+
+    const applyLogo = (dataUrl: string) => {
+      logoImg.onload = () => {
+        logoWell.style.background = logoWellBg(logoImg);
+        logoWell.classList.remove('hidden');
+        logoFallback.classList.add('hidden');
+        logoIcon.classList.add('has-logo');
+        dropzone.classList.add('has-logo');
+      };
+      logoImg.onerror = () => showError('Kunde inte visa logotypen.');
+      logoImg.src = dataUrl;
+    };
+
+    const handleFile = (file: File | null) => {
+      clearError();
+      if (!file) return;
+      if (!ACCEPT.has(file.type)) {
+        showError('Ogiltigt format. Använd PNG, JPG, SVG eller WebP.');
+        return;
+      }
+      if (file.size > MAX_BYTES) {
+        showError('Filen är för stor. Max 2 MB.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => applyLogo(reader.result as string);
+      reader.onerror = () => showError('Kunde inte läsa filen.');
+      reader.readAsDataURL(file);
+    };
+
+    fileInput.addEventListener('change', () => handleFile(fileInput.files?.[0] ?? null));
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        fileInput.click();
+      }
+    });
+
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('is-dragover');
+    });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('is-dragover'));
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('is-dragover');
+      handleFile(e.dataTransfer?.files?.[0] ?? null);
+    });
+
+    resetBtn.addEventListener('click', () => {
+      clearError();
+      slider.value = String(defaultHue);
+      setColor(defaultColor);
+      logoImg.src = '';
+      logoImg.onload = null;
+      logoWell.classList.add('hidden');
+      logoWell.style.background = '';
+      logoFallback.classList.remove('hidden');
+      logoIcon.classList.remove('has-logo');
+      dropzone.classList.remove('has-logo');
+      fileInput.value = '';
+    });
+  };
+
+  document.querySelectorAll('[data-brand-preview]').forEach(el => initBrandPreview(el as HTMLElement));
+</script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap');
+
+  .brand-preview {
+    --phone-w: 290px;
+    --float-w: 168px;
+    --float-gap: 36px;
+    position: relative;
+    width: var(--phone-w);
+    flex-shrink: 0;
+  }
+
+  .brand-float {
+    position: absolute;
+    top: 0;
+    right: calc(100% + var(--float-gap));
+    width: var(--float-w);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    z-index: 2;
+    pointer-events: auto;
+  }
+
+  .brand-callout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    width: 100%;
+    color: var(--color-ink);
+    opacity: 0.9;
+    transform: rotate(-1.5deg);
+  }
+
+  .brand-callout-text {
+    font-family: 'Caveat', cursive;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+
+  .brand-callout-arrow {
+    width: 34px;
+    height: 46px;
+    margin-top: 0;
+    transform: rotate(-1deg);
+  }
+
+  .brand-controls {
+    width: 100%;
+    padding: 16px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+    box-shadow: 0 12px 32px -16px rgba(20, 33, 61, 0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .brand-color-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .brand-color-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .brand-phone {
+    width: var(--phone-w);
+    flex-shrink: 0;
+  }
+
+  .home-phone {
+    width: var(--phone-w);
+    height: calc(var(--phone-w) * 844 / 390);
+    background: #14213D;
+    padding: 9px;
+    box-sizing: border-box;
+    border-radius: 46px;
+    box-shadow:
+      0 0 0 1.5px #2b3a5c inset,
+      0 30px 60px -20px rgba(20, 33, 61, 0.45),
+      0 12px 24px -12px rgba(20, 33, 61, 0.3);
+  }
+
+  .home-screen {
+    height: 100%;
+    border-radius: 38px;
+    overflow: hidden;
+    background: linear-gradient(165deg, #5b7cfa 0%, #c850c0 45%, #ffcc70 100%);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px 0;
+    font-size: 10px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .home-island {
+    width: 56px;
+    height: 16px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.35);
+  }
+
+  .home-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px 8px;
+    padding: 16px 12px 20px;
+    flex: 1;
+    align-content: start;
+  }
+
+  .home-icon-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .home-icon-slot.is-dimmed {
+    opacity: 0.28;
+  }
+
+  .home-icon-placeholder,
+  .home-icon-highlight {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+  }
+
+  .home-icon-highlight {
+    position: relative;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--preview-brand) 88%, white),
+      var(--preview-brand) 55%,
+      color-mix(in srgb, var(--preview-brand) 75%, black)
+    );
+    box-shadow: 0 4px 12px rgba(20, 33, 61, 0.35);
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1.1;
+    text-align: center;
+    color: #fff;
+  }
+
+  .home-icon-highlight.has-logo {
+    background: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--preview-brand) 88%, white),
+      var(--preview-brand) 55%,
+      color-mix(in srgb, var(--preview-brand) 75%, black)
+    );
+  }
+
+  .home-logo-well {
+    position: absolute;
+    inset: 12%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14%;
+    box-sizing: border-box;
+    border-radius: 7px;
+    background: #fff;
+    box-shadow: inset 0 0 0 1px rgba(20, 33, 61, 0.06);
+  }
+
+  .home-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .home-icon-label {
+    font-size: 9px;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .brand-copy {
+    text-wrap: balance;
+  }
+
+  .dropzone {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 76px;
+    padding: 14px 12px;
+    border: 1.5px dashed var(--color-line);
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .dropzone:hover,
+  .dropzone.is-dragover {
+    border-color: var(--color-primary);
+    background: color-mix(in oklab, var(--color-primary) 4%, white);
+  }
+
+  .dropzone.has-logo {
+    border-style: solid;
+    border-color: var(--color-line);
+  }
+
+  .dropzone-input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .dropzone-label {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.25;
+    white-space: nowrap;
+  }
+
+  .dropzone-hint {
+    font-size: 9px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .hue-slider {
+    --hue-track: linear-gradient(
+      to right,
+      hsl(0, 45%, 42%),
+      hsl(30, 45%, 42%),
+      hsl(60, 45%, 42%),
+      hsl(90, 45%, 42%),
+      hsl(120, 45%, 42%),
+      hsl(150, 45%, 42%),
+      hsl(180, 45%, 42%),
+      hsl(210, 45%, 42%),
+      hsl(240, 45%, 42%),
+      hsl(270, 45%, 42%),
+      hsl(300, 45%, 42%),
+      hsl(330, 45%, 42%),
+      hsl(360, 45%, 42%)
+    );
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 16px;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .hue-slider::-webkit-slider-runnable-track {
+    height: 8px;
+    border-radius: 999px;
+    background: var(--hue-track);
+    box-shadow: inset 0 0 0 1px rgba(20, 33, 61, 0.08);
+  }
+
+  .hue-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    margin-top: -3px;
+    border-radius: 50%;
+    background: var(--preview-brand);
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(20, 33, 61, 0.35);
+  }
+
+  .hue-slider::-moz-range-track {
+    height: 8px;
+    border-radius: 999px;
+    background: var(--hue-track);
+    box-shadow: inset 0 0 0 1px rgba(20, 33, 61, 0.08);
+  }
+
+  .hue-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background: var(--preview-brand);
+    box-shadow: 0 1px 4px rgba(20, 33, 61, 0.35);
+    cursor: pointer;
+  }
+
+  /* Match AppMockup phone-sm (210px) i showcase */
+  .brand-preview--sm {
+    --phone-w: 210px;
+    --float-w: 158px;
+    --float-gap: 48px;
+  }
+
+  .brand-preview--sm .home-phone {
+    padding: 7px;
+    border-radius: 34px;
+  }
+
+  .brand-preview--sm .home-screen {
+    border-radius: 28px;
+  }
+
+  .brand-preview--sm .home-status {
+    padding: 7px 10px 0;
+    font-size: 8px;
+  }
+
+  .brand-preview--sm .home-island {
+    width: 38px;
+    height: 11px;
+  }
+
+  .brand-preview--sm .home-grid {
+    gap: 9px 4px;
+    padding: 10px 8px 14px;
+  }
+
+  .brand-preview--sm .home-icon-placeholder,
+  .brand-preview--sm .home-icon-highlight {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+  }
+
+  .brand-preview--sm .home-icon-highlight {
+    font-size: 7px;
+  }
+
+  .brand-preview--sm .home-icon-label {
+    font-size: 7px;
+  }
+
+  .brand-preview--sm .brand-float {
+    gap: 2px;
+  }
+
+  .brand-preview--sm .brand-callout-text {
+    font-size: 22px;
+  }
+
+  .brand-preview--sm .brand-callout-arrow {
+    width: 30px;
+    height: 40px;
+  }
+
+  .brand-preview--sm .brand-controls {
+    padding: 14px;
+    gap: 14px;
+    border-radius: 12px;
+  }
+
+  .brand-preview--sm .dropzone {
+    min-height: 70px;
+    padding: 12px 10px;
+  }
+
+  .brand-preview--sm .dropzone-label {
+    font-size: 10.5px;
+  }
+
+  .brand-preview--sm .dropzone-hint {
+    font-size: 8.5px;
+  }
+
+  .brand-preview--sm .brand-color-label {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .brand-preview--sm .brand-color-field {
+    gap: 8px;
+  }
+
+  @media (max-width: 640px) {
+    .brand-preview--sm {
+      --phone-w: 150px;
+      --float-w: 142px;
+      --float-gap: 28px;
+    }
+
+    .brand-preview--sm .brand-callout-text {
+      font-size: 19px;
+    }
+
+    .brand-preview--sm .brand-callout-arrow {
+      width: 26px;
+      height: 36px;
+    }
+
+    .brand-preview--sm .brand-controls {
+      padding: 12px;
+      gap: 12px;
+    }
+  }
+</style>

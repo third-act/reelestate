@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const d = entry.data;
 ---
-<BaseLayout title={d.seoTitle} description={d.seoDescription} niche={d.slug} accentColor={d.accentColor} accentInk={d.accentInk}>
+<BaseLayout title={d.seoTitle} description={d.seoDescription} niche={d.slug} accentColor={d.accentColor} accentInk={d.accentInk} brandColor={d.exampleBrand.color}>
   <Hero niche={d} />
   <div id="appen" class="scroll-mt-20"><ScreenShowcase niche={d} /></div>
   <FeatureGrid features={d.features} />
